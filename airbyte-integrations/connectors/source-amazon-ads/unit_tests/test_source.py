@@ -91,10 +91,11 @@ def test_source_streams(config):
     setup_responses()
     source = SourceAmazonAds()
     streams = source.streams(config)
-    assert len(streams) == 29
+    assert len(streams) == 30
     actual_stream_names = {stream.name for stream in streams}
     expected_stream_names = set(
         [
+            "invoices",
             "profiles",
             "portfolios",
             "sponsored_display_campaigns",
@@ -112,14 +113,22 @@ def test_source_streams(config):
             "sponsored_brands_ad_groups",
             "sponsored_brands_keywords",
             "sponsored_brands_report_stream",
+            "sponsored_brands_v3_report_stream",
+            "sponsored_brands_video_report_stream",
             "attribution_report_performance_adgroup",
             "attribution_report_performance_campaign",
             "attribution_report_performance_creative",
             "attribution_report_products",
             "sponsored_display_budget_rules",
+            "sponsored_display_ad_groups",
+            "sponsored_display_creatives",
+            "sponsored_display_product_ads",
+            "sponsored_display_report_stream",
+            "sponsored_display_targetings",
         ]
     )
     assert not expected_stream_names - actual_stream_names
+    assert not actual_stream_names - expected_stream_names
 
 
 def test_filter_profiles_exist():
