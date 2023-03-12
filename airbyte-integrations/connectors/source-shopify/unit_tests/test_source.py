@@ -50,6 +50,7 @@ from source_shopify.source import (
 @pytest.fixture
 def config(basic_config):
     basic_config["start_date"] = "2020-11-01"
+    basic_config["end_date"] = ""
     basic_config["authenticator"] = ShopifyAuthenticator(basic_config)
     return basic_config
 
