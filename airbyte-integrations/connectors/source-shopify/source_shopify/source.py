@@ -17,8 +17,8 @@ from airbyte_cdk.sources.streams.http import HttpStream
 from .auth import ShopifyAuthenticator
 from .graphql import get_query_products
 from .transform import DataTypeEnforcer
-from .utils import SCOPES_MAPPING, ApiTypeEnum
 from .utils import EagerlyCachedStreamState as stream_state_cache
+from .utils import SCOPES_MAPPING, ApiTypeEnum
 from .utils import ShopifyRateLimiter as limiter
 
 
@@ -31,6 +31,7 @@ class ShopifyStream(HttpStream, ABC):
     primary_key = "id"
     order_field = "updated_at"
     filter_field = "updated_at_min"
+    end_date_field = ""
 
     raise_on_http_errors = True
 
@@ -65,6 +66,8 @@ class ShopifyStream(HttpStream, ABC):
         else:
             params["order"] = f"{self.order_field} asc"
             params[self.filter_field] = self.default_filter_field_value
+            if self.end_date_field and self.config["end_date"]:
+                params[self.end_date_field] = self.config["end_date"]
         return params
 
     @limiter.balance_rate_limit()
@@ -349,6 +352,7 @@ class MetafieldCustomers(MetafieldShopifySubstream):
 
 class Orders(IncrementalShopifyStream):
     data_field = "orders"
+    end_date_field = "updated_at_max"
 
     def path(self, **kwargs) -> str:
         return f"{self.data_field}.json"
@@ -573,7 +577,6 @@ class MetafieldCollections(MetafieldShopifySubstream):
 
 
 class BalanceTransactions(IncrementalShopifyStream):
-
     """
     PaymentsTransactions stream does not support Incremental Refresh based on datetime fields, only `since_id` is supported:
     https://shopify.dev/api/admin-rest/2021-07/resources/transactions
