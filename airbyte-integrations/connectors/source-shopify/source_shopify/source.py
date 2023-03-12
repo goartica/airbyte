@@ -19,8 +19,8 @@ from requests.exceptions import ConnectionError, InvalidURL, JSONDecodeError, Re
 from .auth import MissingAccessTokenError, ShopifyAuthenticator
 from .graphql import get_query_products
 from .transform import DataTypeEnforcer
-from .utils import SCOPES_MAPPING, ApiTypeEnum
 from .utils import EagerlyCachedStreamState as stream_state_cache
+from .utils import SCOPES_MAPPING, ApiTypeEnum
 from .utils import ShopifyAccessScopesError, ShopifyBadJsonError, ShopifyConnectionError, ShopifyNonRetryableErrors
 from .utils import ShopifyRateLimiter as limiter
 from .utils import ShopifyWrongShopNameError
@@ -39,6 +39,7 @@ class ShopifyStream(HttpStream, ABC):
     primary_key = "id"
     order_field = "updated_at"
     filter_field = "updated_at_min"
+    end_date_field = ""
 
     raise_on_http_errors = True
     max_retries = 5
@@ -78,8 +79,8 @@ class ShopifyStream(HttpStream, ABC):
         else:
             params["order"] = f"{self.order_field} asc"
             params[self.filter_field] = self.default_filter_field_value
-            if self.config.get("end_date") and self.filter_field == "updated_at_min":
-                params["updated_at_max"] = self.config.get("end_date")
+            if self.end_date_field and self.config["end_date"]:
+                params[self.end_date_field] = self.config["end_date"]
         return params
 
     @limiter.balance_rate_limit()
@@ -493,6 +494,7 @@ class MetafieldCustomers(MetafieldShopifySubstream):
 
 class Orders(IncrementalShopifyStreamWithDeletedEvents):
     data_field = "orders"
+    end_date_field = "updated_at_max"
     deleted_events_api_name = "Order"
 
     def path(self, **kwargs) -> str:
@@ -724,7 +726,6 @@ class MetafieldCollections(MetafieldShopifySubstream):
 
 
 class BalanceTransactions(IncrementalShopifyStream):
-
     """
     PaymentsTransactions stream does not support Incremental Refresh based on datetime fields, only `since_id` is supported:
     https://shopify.dev/api/admin-rest/2021-07/resources/transactions
