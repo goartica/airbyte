@@ -8,7 +8,7 @@ import pendulum
 import requests
 from airbyte_cdk.models import SyncMode
 from requests.exceptions import HTTPError
-from source_amazon_ads.schemas import AttributionReportModel
+from source_amazon_ads.schemas import AttributionReportModel, Profile
 from source_amazon_ads.streams.common import AmazonAdsStream
 
 BRAND_REFERRAL_BONUS = "brb_bonus_amount"
@@ -72,6 +72,9 @@ class AttributionReport(AmazonAdsStream):
 
     def __init__(self, config: Mapping[str, Any], *args, **kwargs):
         self._start_date = config.get("start_date")
+        self._end_date = config.get("end_date")
+        self._req_start_date = ""
+        self._req_end_date = ""
         super().__init__(config, *args, **kwargs)
 
     @property
