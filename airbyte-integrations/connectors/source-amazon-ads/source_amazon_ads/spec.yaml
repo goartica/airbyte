@@ -108,6 +108,15 @@ connectionSpecification:
       type: array
       uniqueItems: true
       order: 9
+    end_date:
+      title: End Date
+      description:
+        The End date for collecting reports up to. In YYYY-MM-DD format
+      examples:
+        - "2022-10-10"
+        - "2022-10-22"
+      order: 10
+      type: string
   required:
     - client_id
     - client_secret

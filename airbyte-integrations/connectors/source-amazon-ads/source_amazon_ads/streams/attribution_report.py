@@ -6,6 +6,7 @@ from typing import Any, Iterable, Mapping, MutableMapping, Optional
 
 import pendulum
 import requests
+
 from source_amazon_ads.schemas import AttributionReportModel, Profile
 from source_amazon_ads.streams.common import AmazonAdsStream
 
@@ -70,6 +71,7 @@ class AttributionReport(AmazonAdsStream):
 
     def __init__(self, config: Mapping[str, Any], *args, **kwargs):
         self._start_date = config.get("start_date")
+        self._end_date = config.get("end_date")
         self._req_start_date = ""
         self._req_end_date = ""
 
@@ -81,6 +83,9 @@ class AttributionReport(AmazonAdsStream):
 
         if self._start_date:
             new_start_date = max(self._start_date, new_end_date.subtract(days=self.REPORTING_PERIOD))
+
+        if self._end_date:
+            new_end_date = min(self._end_date, new_end_date)
 
         self._req_start_date = new_start_date.format(self.REPORT_DATE_FORMAT)
         self._req_end_date = new_end_date.format(self.REPORT_DATE_FORMAT)
@@ -116,10 +121,10 @@ class AttributionReport(AmazonAdsStream):
         return "/attribution/report"
 
     def request_body_json(
-        self,
-        stream_state: Mapping[str, Any],
-        stream_slice: Mapping[str, Any] = None,
-        next_page_token: Mapping[str, Any] = None,
+            self,
+            stream_state: Mapping[str, Any],
+            stream_slice: Mapping[str, Any] = None,
+            next_page_token: Mapping[str, Any] = None,
     ) -> Optional[Mapping]:
         body = {
             "reportType": self.report_type,
