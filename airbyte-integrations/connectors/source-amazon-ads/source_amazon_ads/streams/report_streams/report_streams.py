@@ -22,6 +22,7 @@ from airbyte_cdk.sources.streams.availability_strategy import AvailabilityStrate
 from airbyte_cdk.sources.streams.http.auth import Oauth2Authenticator
 from pendulum import Date
 from pydantic import BaseModel
+
 from source_amazon_ads.schemas import CatalogModel, MetricsReport, Profile
 from source_amazon_ads.streams.common import BasicAmazonAdsStream
 from source_amazon_ads.utils import get_typed_env, iterate_one_by_one
@@ -123,6 +124,7 @@ class ReportStream(BasicAmazonAdsStream, ABC):
         self._session = requests.Session()
         self._model = self._generate_model()
         self._start_date: Optional[Date] = config.get("start_date")
+        self._end_date: Optional[Date] = config.get("end_date")
         self._look_back_window: int = config["look_back_window"]
         # Timeout duration in minutes for Reports. Default is 180 minutes.
         self.report_wait_timeout: int = get_typed_env("REPORT_WAIT_TIMEOUT", 180)
@@ -139,11 +141,11 @@ class ReportStream(BasicAmazonAdsStream, ABC):
         return None
 
     def read_records(
-        self,
-        sync_mode: SyncMode,
-        cursor_field: List[str] = None,
-        stream_slice: Mapping[str, Any] = None,
-        stream_state: Mapping[str, Any] = None,
+            self,
+            sync_mode: SyncMode,
+            cursor_field: List[str] = None,
+            stream_slice: Mapping[str, Any] = None,
+            stream_state: Mapping[str, Any] = None,
     ) -> Iterable[Mapping[str, Any]]:
         """
         This is base method of CDK Stream class for getting metrics report. It
@@ -288,9 +290,9 @@ class ReportStream(BasicAmazonAdsStream, ABC):
     @backoff.on_exception(
         backoff.expo,
         (
-            requests.exceptions.Timeout,
-            requests.exceptions.ConnectionError,
-            TooManyRequests,
+                requests.exceptions.Timeout,
+                requests.exceptions.ConnectionError,
+                TooManyRequests,
         ),
         max_tries=10,
     )
@@ -304,9 +306,9 @@ class ReportStream(BasicAmazonAdsStream, ABC):
             raise TooManyRequests()
         return response
 
-    def get_date_range(self, start_date: Date, timezone: str) -> Iterable[str]:
+    def get_date_range(self, start_date: Date, end_date: Date) -> Iterable[str]:
         while True:
-            if start_date > pendulum.today(tz=timezone).date():
+            if start_date > end_date:
                 break
             yield start_date.format(self.REPORT_DATE_FORMAT)
             start_date = start_date.add(days=1)
@@ -322,13 +324,20 @@ class ReportStream(BasicAmazonAdsStream, ABC):
             return max(self._start_date, today.subtract(days=self.REPORTING_PERIOD))
         return today
 
+    def get_end_date(self, profile: Profile) -> Date:
+        today = pendulum.today(tz=profile.timezone).date()
+        if self._end_date:
+            return min(self._end_date, today)
+
+        return today
+
     def stream_profile_slices(self, profile: Profile, stream_state: Mapping[str, Any]) -> Iterable[Mapping[str, Any]]:
         start_date = self.get_start_date(profile, stream_state)
-        for report_date in self.get_date_range(start_date, profile.timezone):
+        for report_date in self.get_date_range(start_date, self.get_end_date(profile)):
             yield {"profile": profile, self.cursor_field: report_date}
 
     def stream_slices(
-        self, sync_mode: SyncMode, cursor_field: List[str] = None, stream_state: Mapping[str, Any] = None
+            self, sync_mode: SyncMode, cursor_field: List[str] = None, stream_state: Mapping[str, Any] = None
     ) -> Iterable[Optional[Mapping[str, Any]]]:
 
         stream_state = stream_state or {}

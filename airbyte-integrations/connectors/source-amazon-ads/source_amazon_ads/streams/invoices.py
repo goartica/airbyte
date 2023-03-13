@@ -43,6 +43,7 @@ class Invoices(AmazonAdsStream):
 
     def __init__(self, config: Mapping[str, Any], *args, **kwargs):
         self._start_date: Optional[Date] = config.get("start_date")
+        self._end_date: Optional[Date] = config.get("end_date")
         super().__init__(config, *args, **kwargs)
 
         # create object of _Invoice class
@@ -76,10 +77,10 @@ class Invoices(AmazonAdsStream):
         return "/invoices"
 
     def request_params(
-        self,
-        stream_state: Mapping[str, Any],
-        stream_slice: Mapping[str, Any] = None,
-        next_page_token: Mapping[str, Any] = None,
+            self,
+            stream_state: Mapping[str, Any],
+            stream_slice: Mapping[str, Any] = None,
+            next_page_token: Mapping[str, Any] = None,
     ) -> Optional[Mapping]:
         # count and cursor parameters can not be used together.
         # only return cursor parameter.
@@ -105,6 +106,10 @@ class Invoices(AmazonAdsStream):
                 if from_date < self._start_date:
                     self._got_all_invoices = True
                     break
+
+                # skip fetching records which are older than provided end date
+                if self._end_date and from_date > self._end_date:
+                    continue
 
                 # fetch details of individual invoice
                 self._invoice.update_vars(record["id"], self._current_profile_id)
