@@ -35,6 +35,7 @@ from .streams import (
     SponsoredProductKeywords,
     SponsoredProductNegativeKeywords,
     SponsoredProductsReportStream,
+    SponsoredProductsReportStreamV3,
     SponsoredProductTargetings,
 )
 
@@ -112,6 +113,7 @@ class SourceAmazonAds(AbstractSource):
             SponsoredProductAds,
             SponsoredProductTargetings,
             SponsoredProductsReportStream,
+            SponsoredProductsReportStreamV3,
             SponsoredBrandsCampaigns,
             SponsoredBrandsAdGroups,
             SponsoredBrandsKeywords,
