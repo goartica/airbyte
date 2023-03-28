@@ -12,7 +12,22 @@
           ["updatedAt"]
         ]
       },
-      "sync_mode": "incremental",
+      "sync_mode": "full_refresh",
+      "destination_sync_mode": "overwrite"
+    },
+    {
+      "stream": {
+        "name": "sponsored_products_report_stream_v3",
+        "json_schema": {},
+        "supported_sync_modes": ["full_refresh", "incremental"],
+        "source_defined_primary_key": [
+          ["profileId"],
+          ["recordType"],
+          ["reportDate"],
+          ["updatedAt"]
+        ]
+      },
+      "sync_mode": "full_refresh",
       "destination_sync_mode": "overwrite"
     }
   ]
