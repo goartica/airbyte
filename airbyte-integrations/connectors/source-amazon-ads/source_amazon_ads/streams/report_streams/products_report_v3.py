@@ -89,15 +89,10 @@ METRICS_MAP = {
         "unitsSoldSameSku30d",
     ],
     "keywords": [
-        "campaignName",
-        "campaignId",
-        "adGroupName",
-        "adGroupId",
-        "keywordId",
-        "keyword",
-        "matchType",
         "impressions",
         "clicks",
+        "costPerClick",
+        "clickThroughRate",
         "cost",
         "purchases1d",
         "purchases7d",
@@ -123,6 +118,32 @@ METRICS_MAP = {
         "unitsSoldSameSku7d",
         "unitsSoldSameSku14d",
         "unitsSoldSameSku30d",
+        "kindleEditionNormalizedPagesRead14d",
+        "kindleEditionNormalizedPagesRoyalties14d",
+        "salesOtherSku7d",
+        "unitsSoldOtherSku7d",
+        "acosClicks7d",
+        "acosClicks14d",
+        "roasClicks7d",
+        "roasClicks14d",
+        "keywordId",
+        "keyword",
+        "campaignBudgetCurrencyCode",
+        "startDate",
+        "endDate",
+        "portfolioId",
+        "campaignName",
+        "campaignId",
+        "campaignBudgetType",
+        "campaignBudgetAmount",
+        "campaignStatus",
+        "keywordBid",
+        "adGroupName",
+        "adGroupId",
+        "keywordType",
+        "matchType",
+        "targeting",
+        "adKeywordStatus",
     ],
     "targets": [
         "campaignName",
@@ -247,6 +268,64 @@ METRICS_MAP = {
         "keywordId",
         "targeting",
         "keywordType",
+    ],
+    "searchTerm": [
+        "impressions",
+        "clicks",
+        "costPerClick",
+        "clickThroughRate",
+        "cost",
+        "purchases1d",
+        "purchases7d",
+        "purchases14d",
+        "purchases30d",
+        "purchasesSameSku1d",
+        "purchasesSameSku7d",
+        "purchasesSameSku14d",
+        "purchasesSameSku30d",
+        "unitsSoldClicks1d",
+        "unitsSoldClicks7d",
+        "unitsSoldClicks14d",
+        "unitsSoldClicks30d",
+        "sales1d",
+        "sales7d",
+        "sales14d",
+        "sales30d",
+        "attributedSalesSameSku1d",
+        "attributedSalesSameSku7d",
+        "attributedSalesSameSku14d",
+        "attributedSalesSameSku30d",
+        "unitsSoldSameSku1d",
+        "unitsSoldSameSku7d",
+        "unitsSoldSameSku14d",
+        "unitsSoldSameSku30d",
+        "kindleEditionNormalizedPagesRead14d",
+        "kindleEditionNormalizedPagesRoyalties14d",
+        "salesOtherSku7d",
+        "unitsSoldOtherSku7d",
+        "acosClicks7d",
+        "acosClicks14d",
+        "roasClicks7d",
+        "roasClicks14d",
+        "keywordId",
+        "keyword",
+        "campaignBudgetCurrencyCode",
+        "startDate",
+        "endDate",
+        "portfolioId",
+        "searchTerm",
+        "campaignName",
+        "campaignId",
+        "campaignBudgetType",
+        "campaignBudgetAmount",
+        "campaignStatus",
+        "keywordBid",
+        "adGroupName",
+        "adGroupId",
+        "keywordType",
+        "matchType",
+        "targeting",
+        "adKeywordStatus",
     ]
 }
 
@@ -308,7 +387,30 @@ class SponsoredProductsReportStreamV3(ReportStream):
             filters = [{"field": "keywordType", "values": ["TARGETING_EXPRESSION", "TARGETING_EXPRESSION_PREDEFINED"]}]
 
             if record_type == "keywords":
-                filters = [{"field": "keywordType", "values": ["BROAD", "PHRASE", "EXACT"]}]
+                filters = [
+                    {
+                        "field": "keywordType",
+                        "values": ["BROAD", "PHRASE", "EXACT", "TARGETING_EXPRESSION", "TARGETING_EXPRESSION_PREDEFINED"]
+                    },
+                    {
+                        "field": "adKeywordStatus",
+                        "values": [
+                            "ENABLED",
+                            "PAUSED",
+                            "ARCHIVED"
+                        ]
+                    }
+                ]
+        
+        elif record_type == "searchTerm":
+            group_by = ["searchTerm"]
+            reportTypeId = "spSearchTerm"
+            filters = [
+                {
+                    "field": "keywordType",
+                    "values": ["BROAD", "PHRASE", "EXACT", "TARGETING_EXPRESSION", "TARGETING_EXPRESSION_PREDEFINED"]
+                }
+            ]
 
         body = {
             "name": f"{record_type} report {report_date}",
