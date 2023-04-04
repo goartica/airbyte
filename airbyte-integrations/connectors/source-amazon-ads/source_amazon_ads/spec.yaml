@@ -105,6 +105,7 @@ connectionSpecification:
           - keywords
           - productAds
           - targets
+          - searchTerm
       type: array
       uniqueItems: true
       order: 9
