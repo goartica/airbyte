@@ -78,7 +78,7 @@ METRICS_MAP = {
         "unitsSoldSameSku14d",
         "unitsSoldSameSku30d",
     ],
-    "keywords": [
+    "keywords_donotuse": [
         "campaignName",
         "campaignId",
         "adGroupName",
