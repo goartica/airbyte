@@ -78,7 +78,7 @@ METRICS_MAP = {
         "attributedUnitsOrdered14dSameSKU",
         "attributedUnitsOrdered30dSameSKU",
     ],
-    "keywords": [
+    "keywords_donotuse": [
         "campaignName",
         "campaignId",
         "adGroupName",
