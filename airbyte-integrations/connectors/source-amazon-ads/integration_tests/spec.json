@@ -86,7 +86,8 @@
             "campaigns",
             "keywords",
             "productAds",
-            "targets"
+            "targets",
+            "searchTerm"
           ]
         },
         "type": "array",
