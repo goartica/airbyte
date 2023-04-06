@@ -353,6 +353,7 @@ class SponsoredProductsReportStreamV3(ReportStream):
     report_is_created = HTTPStatus.OK
     metrics_map = METRICS_MAP
     metrics_type_to_id_map = METRICS_TYPE_TO_ID_MAP
+    REPORTING_PERIOD = 95
 
     def report_init_endpoint(self, record_type: str) -> str:
         return f"/{self.API_VERSION}/reports"
