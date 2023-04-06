@@ -342,6 +342,7 @@ class SponsoredProductsReportStreamV3(ReportStream):
     ad_product = "SPONSORED_PRODUCTS"
     report_is_created = HTTPStatus.OK
     metrics_map = METRICS_MAP
+    REPORTING_PERIOD = 95
 
     def report_init_endpoint(self, record_type: str) -> str:
         return f"/{self.API_VERSION}/reports"
@@ -390,7 +391,7 @@ class SponsoredProductsReportStreamV3(ReportStream):
                         ]
                     }
                 ]
-        
+
         elif record_type == "searchTerm":
             group_by = ["searchTerm"]
             reportTypeId = "spSearchTerm"
