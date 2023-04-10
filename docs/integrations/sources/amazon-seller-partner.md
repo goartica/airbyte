@@ -105,6 +105,7 @@ This source is capable of syncing the following tables and their data:
 - [Inventory Ledger Report - Detailed View](https://developer-docs.amazon.com/sp-api/docs/reports-api-v2021-06-30-reference)
 - [FBA Manage Inventory Health Report](https://developer-docs.amazon.com/sp-api/docs/reports-api-v2021-06-30-reference)
 - [Inventory Ledger Report - Summary View](https://developer-docs.amazon.com/sp-api/docs/reports-api-v2021-06-30-reference)
+- [FBA Reimbursements Report](https://sellercentral.amazon.com/help/hub/reference/G200732720)
 
 ## Report options
 
@@ -128,7 +129,8 @@ So, for any value that exceeds the limit, the `period_in_days` will be automatic
 ## Changelog
 
 | Version  | Date       | Pull Request                                               | Subject                                                                |
-|:---------|:-----------|:-----------------------------------------------------------|:-----------------------------------------------------------------------|
+| :------- | :--------- | :--------------------------------------------------------- | :--------------------------------------------------------------------- |
+| `0.2.34` | 2023-03-01 | [\#23605](https://github.com/airbytehq/airbyte/pull/23605) | Add FBA Reimbursement Report stream                                    |
 | `0.2.33` | 2023-03-01 | [\#23606](https://github.com/airbytehq/airbyte/pull/23606) | Implement reportOptions for all missing reports and refactor           |
 | `0.2.32` | 2022-02-21 | [\#23300](https://github.com/airbytehq/airbyte/pull/23300) | Make AWS Access Key, AWS Secret Access and Role ARN optional           |
 | `0.2.31` | 2022-01-10 | [\#16430](https://github.com/airbytehq/airbyte/pull/16430) | Implement slicing for report streams                                   |
