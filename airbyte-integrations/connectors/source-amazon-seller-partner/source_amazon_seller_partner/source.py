@@ -19,6 +19,7 @@ from source_amazon_seller_partner.streams import (
     BrandAnalyticsMarketBasketReports,
     BrandAnalyticsRepeatPurchaseReports,
     BrandAnalyticsSearchTermsReports,
+    CatalogItems,
     FbaAfnInventoryByCountryReports,
     FbaAfnInventoryReports,
     FbaCustomerReturnsReports,
@@ -182,6 +183,7 @@ class SourceAmazonSellerPartner(AbstractSource):
             LedgerSummaryViewReport,
             FbaReimbursementsReports,
             VendorOrders,
+            CatalogItems,
         ]
 
         # TODO: Remove after Brand Analytics will be enabled in CLOUD: https://github.com/airbytehq/airbyte/issues/32353
