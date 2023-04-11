@@ -18,6 +18,7 @@ from source_amazon_seller_partner.streams import (
     BrandAnalyticsMarketBasketReports,
     BrandAnalyticsRepeatPurchaseReports,
     BrandAnalyticsSearchTermsReports,
+    CatalogItems,
     FbaAfnInventoryByCountryReports,
     FbaAfnInventoryReports,
     FbaCustomerReturnsReports,
@@ -207,6 +208,7 @@ class SourceAmazonSellerPartner(AbstractSource):
             FbaInventoryPlaningReport(**stream_kwargs),
             LedgerSummaryViewReport(**stream_kwargs),
             FbaReimbursementsReports(**stream_kwargs),
+            CatalogItems(**stream_kwargs),
         ]
 
     def spec(self, *args, **kwargs) -> ConnectorSpecification:
