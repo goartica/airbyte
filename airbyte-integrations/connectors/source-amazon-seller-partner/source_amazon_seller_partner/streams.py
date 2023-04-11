@@ -1275,7 +1275,7 @@ class CatalogItems(AmazonSPStream, ABC):
     ):
         super().__init__(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
                          report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
-        self._listing = MerchantListingsReport(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
+        self._listing = MerchantListingsReports(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
                                                report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
 
     def read_records(self, *args, **kvargs) -> Iterable[Mapping[str, Any]]:
@@ -1284,7 +1284,7 @@ class CatalogItems(AmazonSPStream, ABC):
         """
         max_asins = 20
         asins = []
-        self.logger.info("fetching ASINs from listing report .........")
+        self.logger.info("fetching ASINs from all listing reports .........")
         for record in self._listing.read_records(sync_mode=SyncMode.full_refresh):
             asins.append(record["asin1"])
 
