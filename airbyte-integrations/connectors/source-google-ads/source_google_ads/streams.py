@@ -510,6 +510,11 @@ class ClickView(IncrementalGoogleAdsStream):
     slice_duration = pendulum.duration(days=0)
 
 
+class SearchTermReport(IncrementalGoogleAdsStream):
+    """
+    SearchTermReport stream: https://developers.google.com/google-ads/api/fields/v13/search_term_view
+    """
+
 class UserInterest(GoogleAdsStream):
     """
     Ad Group Ad Labels stream: https://developers.google.com/google-ads/api/fields/v15/ad_group_ad_label
