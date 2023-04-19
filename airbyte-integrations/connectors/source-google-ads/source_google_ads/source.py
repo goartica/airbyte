@@ -48,6 +48,7 @@ from .streams import (
     ShoppingPerformanceReport,
     UserInterest,
     UserLocationReport,
+    SearchTermReport,
 )
 from .utils import GAQL
 
@@ -199,6 +200,7 @@ class SourceGoogleAds(AbstractSource):
                     AdGroupAdReport(**non_manager_incremental_config),
                     GeographicReport(**non_manager_incremental_config),
                     KeywordReport(**non_manager_incremental_config),
+                    SearchTermReport(**non_manager_incremental_config),
                 ]
             )
         for single_query_config in config.get("custom_queries", []):

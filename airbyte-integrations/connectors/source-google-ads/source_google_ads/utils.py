@@ -38,6 +38,7 @@ REPORT_MAPPING = {
     "shopping_performance_report": "shopping_performance_view",
     "user_interest": "user_interest",
     "user_location_report": "user_location_view",
+    "search_term_report": "search_term_view",
 }
 
 
