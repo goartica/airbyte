@@ -450,6 +450,11 @@ class ClickView(IncrementalGoogleAdsStream):
     range_days = 1
 
 
+class SearchTermReport(IncrementalGoogleAdsStream):
+    """
+    SearchTermReport stream: https://developers.google.com/google-ads/api/fields/v13/search_term_view
+    """
+
 class UserInterest(GoogleAdsStream):
     """
     Ad Group Ad Labels stream: https://developers.google.com/google-ads/api/fields/v11/ad_group_ad_label
