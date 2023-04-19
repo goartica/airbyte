@@ -403,3 +403,9 @@ class ClickView(IncrementalGoogleAdsStream):
     primary_key = ["click_view.gclid", "segments.date", "segments.ad_network_type"]
     days_of_data_storage = 90
     range_days = 1
+
+
+class SearchTermReport(IncrementalGoogleAdsStream):
+    """
+    SearchTermReport stream: https://developers.google.com/google-ads/api/fields/v13/search_term_view
+    """
