@@ -1,0 +1,39 @@
+documentationUrl: https://docsurl.com
+connectionSpecification:
+  $schema: http://json-schema.org/draft-07/schema#
+  title: Walmart Seller Spec
+  type: object
+  required:
+    - client_id
+    - client_secret
+    - start_date
+  properties:
+    client_id:
+      title: Client ID
+      description:
+        Account level client id
+      order: 1
+      type: string
+    client_secret:
+      title: Client Secret
+      description:
+        Account level client secret
+      airbyte_secret: true
+      order: 2
+      type: string
+    start_date:
+      title: Start Date
+      description:
+        The Start date for collecting reports. In 2017-01-25T00:00:00Z format
+      examples:
+        - "2017-01-25T00:00:00Z"
+      order: 3
+      type: string
+    end_date:
+      title: End Date
+      description:
+        The End date for collecting reports. In 2017-01-25T00:00:00Z format
+      examples:
+        - "2017-01-25T00:00:00Z"
+      order: 4
+      type: string
