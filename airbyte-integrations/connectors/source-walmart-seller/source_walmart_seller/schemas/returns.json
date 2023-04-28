@@ -1,0 +1,54 @@
+{
+  "title": "Returns",
+  "description": "All returns data",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "returnOrderId": {
+      "type": "string"
+    },
+    "returnType": {
+      "type": ["null","string"]
+    },
+    "customerEmailId": {
+      "type": ["null","string"]
+    },
+    "replacementCustomerOrderId": {
+      "type": ["null","string"]
+    },
+    "customerOrderId": {
+      "type": ["null","string"]
+    },
+    "returnOrderDate": {
+      "type": ["null","string"]
+    },
+    "returnByDate": {
+      "type": ["null","string"]
+    },
+    "refundMode": {
+      "type": ["null","string"]
+    },
+    "customerName": {
+      "type" : ["null", "object"],
+      "properties" : {
+        "firstName" : {
+          "type" : ["null", "string"]
+        },
+        "lastName" : {
+          "type" : ["null", "string"]
+        }
+      }
+    },
+    "totalRefundAmount": {
+      "type" : ["null", "object"],
+      "properties" : {
+        "currencyAmount" : {
+          "type" : ["null", "number"]
+        },
+        "currencyUnit" : {
+          "type" : ["null", "string"]
+        }
+      }
+    }
+  }
+}

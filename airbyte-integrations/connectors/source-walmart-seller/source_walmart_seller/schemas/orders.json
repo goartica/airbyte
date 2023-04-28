@@ -1,0 +1,37 @@
+{
+  "title": "Returns",
+  "description": "All returns data",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "purchaseOrderId": {
+      "type": "string"
+    },
+    "customerOrderId": {
+      "type": ["null","string"]
+    },
+    "customerEmailId": {
+      "type": ["null","string"]
+    },
+    "orderDate": {
+      "type": ["null","integer"]
+    },
+    "shippingInfo": {
+      "type": ["null","object"],
+      "properties": {
+        "phone": {
+          "type": ["null","string"]
+        },
+        "estimatedDeliveryDate": {
+          "type": ["null","string"]
+        },
+        "estimatedShipDate": {
+          "type": ["null","integer"]
+        },
+        "methodCode": {
+          "type": ["null","string"]
+        }
+      }
+    }
+  }
+}
