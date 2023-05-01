@@ -14,6 +14,7 @@ class WalmartStream(HttpStream, ABC):
     url = "https://marketplace.walmartapis.com/v3/"
     data_field = ""
     limit = "200"
+    next_page_token_field = "nextCursor"
 
     def __init__(self, start_date: str, end_date: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,6 +40,17 @@ class WalmartStream(HttpStream, ABC):
     def availability_strategy(self) -> Optional["AvailabilityStrategy"]:
         return None
 
+    def _params_from_next_page_token(self, token_val: str):
+        params = {}
+        qps = token_val.split("&")
+        for qp in qps:
+            qp = qp.strip("?")
+            p = qp.split("=")
+            if len(p) == 2:
+                params[p[0]] = p[1]
+
+        return params
+
 
 class Orders(WalmartStream, ABC):
     """
@@ -51,7 +63,15 @@ class Orders(WalmartStream, ABC):
     def path(self, **kwargs) -> str:
         return "orders"
 
-    def request_params(self, *args, **kvargs) -> MutableMapping[str, Any]:
+    def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
+        next_page_token = response.json().get("list").get("meta").get(self.next_page_token_field)
+        if next_page_token:
+            return {self.next_page_token_field: next_page_token}
+
+    def request_params(self, next_page_token: Mapping[str, Any] = None, *args, **kvargs) -> MutableMapping[str, Any]:
+        if next_page_token:
+            return self._params_from_next_page_token(str(next_page_token[self.next_page_token_field]))
+
         params = {
             "lastModifiedStartDate": self.start_date,
             "limit": self.limit
@@ -83,7 +103,15 @@ class Returns(WalmartStream, ABC):
     def path(self, **kwargs) -> str:
         return "returns"
 
-    def request_params(self, *args, **kvargs) -> MutableMapping[str, Any]:
+    def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
+        next_page_token = response.json().get("meta").get(self.next_page_token_field)
+        if next_page_token:
+            return {self.next_page_token_field: next_page_token}
+
+    def request_params(self, next_page_token: Mapping[str, Any] = None, *args, **kvargs) -> MutableMapping[str, Any]:
+        if next_page_token:
+            return self._params_from_next_page_token(str(next_page_token[self.next_page_token_field]))
+
         params = {
             "returnLastModifiedStartDate": self.start_date,
             "limit": self.limit
