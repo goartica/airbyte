@@ -7,7 +7,7 @@ import requests
 from airbyte_cdk.sources.streams.availability_strategy import AvailabilityStrategy
 from airbyte_cdk.sources.streams.http import HttpStream
 
-DATE_TIME_FORMAT = "%Y-%m-%d"
+DATE_FORMAT = "%Y-%m-%d"
 
 
 class WalmartStream(HttpStream, ABC):
@@ -83,7 +83,7 @@ class Orders(WalmartStream, ABC):
         return params
 
     def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
-        print(response.json().get("list").get("meta"))
+        self.logger.info("Orders: %s", response.json().get("list").get("meta"))
         if response.status_code == HTTPStatus.OK:
             if self.data_field:
                 yield from response.json().get("list").get("elements").get(self.data_field, [])
@@ -119,13 +119,13 @@ class Returns(WalmartStream, ABC):
         _end_date = self.end_date
 
         if not _end_date:
-            _end_date = pendulum.now("utc").strftime(DATE_TIME_FORMAT)
+            _end_date = pendulum.now("utc").strftime(DATE_FORMAT)
 
         params["returnLastModifiedEndDate"] = _end_date
         return params
 
     def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
-        print(response.json().get("meta"))
+        self.logger.info("Returns: %s", response.json().get("meta"))
         if response.status_code == HTTPStatus.OK:
             if self.data_field:
                 yield from response.json().get(self.data_field, [])
@@ -135,17 +135,71 @@ class Returns(WalmartStream, ABC):
 
 
 class Items(WalmartStream, ABC):
+    """
+    https://developer.walmart.com/api/us/mp/items#operation/getAllItems
+    """
     primary_key = "sku"
     data_field = "ItemResponse"
 
     def path(self, **kwargs) -> str:
         return "items"
 
+    def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
+        next_page_token = response.json().get(self.next_page_token_field)
+        if next_page_token:
+            return {self.next_page_token_field: next_page_token}
+
+    def request_params(self, next_page_token: Mapping[str, Any] = None, *args, **kvargs) -> MutableMapping[str, Any]:
+        if next_page_token:
+            return {
+                self.next_page_token_field: next_page_token[self.next_page_token_field]
+            }
+
+        return {
+            "limit": self.limit
+        }
+
     def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
-        print("items: ", response)
+        self.logger.info("Items: %s, %s", response.json().get("totalItems"), response.json().get("nextCursor"))
         if response.status_code == HTTPStatus.OK:
             if self.data_field:
                 yield from response.json().get(self.data_field, [])
+            else:
+                yield from response.json()
+            return
+
+
+class Inventories(WalmartStream, ABC):
+    """
+    https://developer.walmart.com/api/us/mp/inventory#operation/getMultiNodeInventoryForAllSkuAndAllShipNodes
+    """
+    primary_key = "sku"
+    data_field = "inventories"
+    limit = "50"
+
+    def path(self, **kwargs) -> str:
+        return "inventories"
+
+    def next_page_token(self, response: requests.Response) -> Optional[Mapping[str, Any]]:
+        next_page_token = response.json().get("meta").get(self.next_page_token_field)
+        if next_page_token:
+            return {self.next_page_token_field: next_page_token}
+
+    def request_params(self, next_page_token: Mapping[str, Any] = None, *args, **kvargs) -> MutableMapping[str, Any]:
+        if next_page_token:
+            return {
+                self.next_page_token_field: next_page_token[self.next_page_token_field]
+            }
+
+        return {
+            "limit": self.limit
+        }
+
+    def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
+        self.logger.info("Inventories: %s", response.json().get("meta"))
+        if response.status_code == HTTPStatus.OK:
+            if self.data_field:
+                yield from response.json().get("elements").get(self.data_field, [])
             else:
                 yield from response.json()
             return
