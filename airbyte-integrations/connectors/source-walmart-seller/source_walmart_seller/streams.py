@@ -2,9 +2,12 @@ from abc import ABC
 from http import HTTPStatus
 from typing import Any, Mapping, Optional, MutableMapping, Iterable
 
+import pendulum
 import requests
 from airbyte_cdk.sources.streams.availability_strategy import AvailabilityStrategy
 from airbyte_cdk.sources.streams.http import HttpStream
+
+DATE_TIME_FORMAT = "%Y-%m-%d"
 
 
 class WalmartStream(HttpStream, ABC):
@@ -49,11 +52,15 @@ class Orders(WalmartStream, ABC):
         return "orders"
 
     def request_params(self, *args, **kvargs) -> MutableMapping[str, Any]:
-        return {
+        params = {
             "lastModifiedStartDate": self.start_date,
-            "lastModifiedEndDate": self.end_date,
             "limit": self.limit
         }
+
+        if self.end_date:
+            params["lastModifiedEndDate"] = self.end_date
+
+        return params
 
     def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
         print(response.json().get("list").get("meta"))
@@ -77,11 +84,17 @@ class Returns(WalmartStream, ABC):
         return "returns"
 
     def request_params(self, *args, **kvargs) -> MutableMapping[str, Any]:
-        return {
+        params = {
             "returnLastModifiedStartDate": self.start_date,
-            "returnLastModifiedEndDate": self.end_date,
             "limit": self.limit
         }
+        _end_date = self.end_date
+
+        if not _end_date:
+            _end_date = pendulum.now("utc").strftime(DATE_TIME_FORMAT)
+
+        params["returnLastModifiedEndDate"] = _end_date
+        return params
 
     def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
         print(response.json().get("meta"))
