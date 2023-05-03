@@ -39,7 +39,7 @@ class WalmartAuthenticator(HttpAuthenticator):
                     "Content-Type": "application/x-www-form-urlencoded",
                     "Accept": "application/json",
                     "WM_SVC.NAME": "Walmart Marketplace",
-                    "WM_QOS.CORRELATION_ID": "b3261d2d-028a-4ef7-8602-633c23200af6"
+                    "WM_QOS.CORRELATION_ID": "b3261d2d-028a-4ef7-8602-633c23200af6"  # todo - add random generated guid
                 },
             )
             response.raise_for_status()
