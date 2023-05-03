@@ -1,0 +1,146 @@
+{
+  "title": "ItemReport",
+  "description": "All item report",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "SKU": {
+      "type": "string"
+    },
+    "Item ID": {
+      "type": "string"
+    },
+    "Product Name": {
+      "type": "string"
+    },
+    "Lifecycle Status": {
+      "type": "string"
+    },
+    "Publish Status": {
+      "type": "string"
+    },
+    "Status Change Reason": {
+      "type": "string"
+    },
+    "Product Category": {
+      "type": "string"
+    },
+    "Price": {
+      "type": "string"
+    },
+    "Currency": {
+      "type": "string"
+    },
+    "Buy Box Item Price": {
+      "type": "string"
+    },
+    "Buy Box Shipping Price": {
+      "type": "string"
+    },
+    "Buy Box Eligible": {
+      "type": "string"
+    },
+    "MSRP": {
+      "type": "string"
+    },
+    "Product Tax Code": {
+      "type": "string"
+    },
+    "Ship Methods": {
+      "type": "string"
+    },
+    "Shipping Weight": {
+      "type": "string"
+    },
+    "Fulfillment Lag Time": {
+      "type": "string"
+    },
+    "Fulfillment Type": {
+      "type": "string"
+    },
+    "WFS Sales Restriction": {
+      "type": "string"
+    },
+    "WPID": {
+      "type": "string"
+    },
+    "GTIN": {
+      "type": "string"
+    },
+    "UPC": {
+      "type": "string"
+    },
+    "Item Page URL": {
+      "type": "string"
+    },
+    "Primary Image URL": {
+      "type": "string"
+    },
+    "Shelf Name": {
+      "type": "string"
+    },
+    "Primary Category Path": {
+      "type": "string"
+    },
+    "Brand": {
+      "type": "string"
+    },
+    "Offer Start Date": {
+      "type": "string"
+    },
+    "Offer End Date": {
+      "type": "string"
+    },
+    "Item Creation Date": {
+      "type": "string"
+    },
+    "Item Last Updated": {
+      "type": "string"
+    },
+    "Reviews Count": {
+      "type": "string"
+    },
+    "Average Rating": {
+      "type": "string"
+    },
+    "Searchable?": {
+      "type": "string"
+    },
+    "Variant Group Id": {
+      "type": "string"
+    },
+    "Primary Variant?": {
+      "type": "string"
+    },
+    "Variant Grouping Attributes": {
+      "type": "string"
+    },
+    "Variant Grouping Values": {
+      "type": "string"
+    },
+    "Competitor URL": {
+      "type": "string"
+    },
+    "Competitor Price": {
+      "type": "string"
+    },
+    "Competitor Ship Price": {
+      "type": "string"
+    },
+    "Competitor Last Date Fetched": {
+      "type": "string"
+    },
+    "Repricer Strategy": {
+      "type": "string"
+    },
+    "Minimum Seller Allowed Price": {
+      "type": "string"
+    },
+    "Maximum Seller Allowed Price": {
+      "type": "string"
+    },
+    "Repricer Status": {
+      "type": "string"
+    }
+  }
+}
