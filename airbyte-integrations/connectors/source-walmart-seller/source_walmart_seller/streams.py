@@ -247,8 +247,6 @@ class WalmartOnRequestReportStream(WalmartStream, ABC):
             "params": params
         }
 
-        print("request_args: ", request_args)
-
         if http_method.upper() in BODY_REQUEST_METHODS:
             if json and data:
                 raise RequestBodyException(
@@ -297,9 +295,7 @@ class WalmartOnRequestReportStream(WalmartStream, ABC):
     ) -> Iterable[Mapping[str, Any]]:
         # create report
         create_payload = self._report_create()
-        print(create_payload)
         request_id = create_payload["requestId"]
-        # request_id = "3162e95b-0161-4cb2-9936-fd8b1b9856f0"
         if not request_id:
             raise Exception(f"no request id received in payload: ", create_payload)
 
@@ -313,7 +309,6 @@ class WalmartOnRequestReportStream(WalmartStream, ABC):
 
         while in_progress and seconds_waited < self.max_wait_seconds:
             report_status_payload = self._report_status(request_id=request_id)
-            print(report_status_payload)
             seconds_waited = (pendulum.now("utc") - start_time).seconds
             in_progress = report_status_payload.get("requestStatus") in ["RECEIVED", "INPROGRESS"]
             is_ready = report_status_payload.get("requestStatus") == "READY"
@@ -325,7 +320,6 @@ class WalmartOnRequestReportStream(WalmartStream, ABC):
         if is_ready:
             # report download
             resp = self._report_download(request_id=request_id)
-            print(resp.json())
             yield from self.parse_response(resp, stream_state, stream_slice)
         elif is_error:
             raise Exception(f"report status is ERROR")
