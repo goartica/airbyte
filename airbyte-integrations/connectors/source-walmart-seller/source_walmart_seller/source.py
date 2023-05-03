@@ -14,7 +14,7 @@ from airbyte_cdk.sources.streams import Stream
 
 from .auth import WalmartAuthenticator
 from .spec import WalmartSellerConfig
-from .streams import Orders, Items, Returns, Inventories
+from .streams import Orders, Items, Returns, Inventories, ItemReport
 
 
 class SourceWalmartSeller(AbstractSource):
@@ -62,4 +62,5 @@ class SourceWalmartSeller(AbstractSource):
             Items(**stream_args),
             Returns(**stream_args),
             Inventories(**stream_args),
+            ItemReport(**stream_args),
         ]
