@@ -1,0 +1,52 @@
+{
+  "title": "Inventories",
+  "description": "All inventories",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "sku": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "object",
+      "properties" : {
+        "shipNode": {
+          "type": ["null","string"]
+        },
+        "inputQty": {
+          "type": "object",
+          "properties" : {
+            "unit": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            }
+          }
+        },
+        "availToSellQty": {
+          "type": "object",
+          "properties" : {
+            "unit": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            }
+          }
+        },
+        "reservedQty": {
+          "type": "object",
+          "properties" : {
+            "unit": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}
