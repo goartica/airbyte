@@ -1,8 +1,10 @@
+import csv
 import re
 import time
 from abc import ABC
+from datetime import datetime
 from http import HTTPStatus
-from io import BytesIO
+from io import BytesIO, TextIOWrapper
 from typing import Any, Mapping, Optional, MutableMapping, Iterable, List
 from urllib.parse import urljoin
 from zipfile import ZipFile
@@ -362,3 +364,58 @@ class ItemReport(WalmartOnRequestReportStream, ABC):
     primary_key = "SKU"
     reportType = "ITEM"
     reportVersion = "v2"
+
+
+class AvailableDates(WalmartStream, ABC):
+
+    @property
+    def primary_key(self) -> str:
+        return None
+
+    def path(self, **kwargs):
+        return "/v3/report/reconreport/availableReconFiles?reportVersion=v1"
+
+    def parse_response(self, response: requests.Response, **kwargs):
+        response_json = response.json()
+        return response_json.get("availableApReportDates", [])
+
+
+class ReconciliationReport(WalmartStream, ABC):
+    @property
+    def primary_key(self) -> str:
+        return None
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.dates_stream = AvailableDates(**kwargs)
+
+    def request_headers(self, *args, **kvargs) -> MutableMapping[str, Any]:
+        return {
+            "Accept": "application/octet-stream",
+            "WM_SVC.NAME": "Walmart Marketplace",
+            "WM_QOS.CORRELATION_ID": "b3261d2d-028a-4ef7-8602-633c23200af6"
+        }
+
+    def path(self, stream_slice: Mapping[str, Any] = None, **kwargs):
+        report_date = stream_slice["report_date"]
+        return f"/v3/report/reconreport/reconFile?reportDate={report_date}&reportVersion=v1"
+
+    def stream_slices(self, **kwargs) -> Iterable[Mapping[str, Any]]:
+        available_dates = self.dates_stream.read_records(sync_mode=SyncMode.full_refresh)
+        start_date = datetime.strptime(self.start_date, DATE_FORMAT)
+        end_date = datetime.strptime(self.end_date, DATE_FORMAT) if self.end_date else datetime.utcnow()
+
+        filtered_dates = [date for date in available_dates if start_date <= datetime.strptime(date, '%m%d%Y') <= end_date]
+
+        for report_date in filtered_dates:
+            yield {"report_date": report_date}
+
+    def parse_response(self, response: requests.Response, **kwargs) -> Iterable[Mapping]:
+        # unzip and read csv document
+        zipped = ZipFile(BytesIO(response.content))
+        file = zipped.open(zipped.infolist()[0])
+        reader = csv.DictReader(TextIOWrapper(file))
+        next(reader, None)  # skip header
+        next(reader, None)  # skip the second line
+        for row in reader:
+            yield row
