@@ -1,0 +1,113 @@
+{
+  "title": "ReconciliationReport",
+  "description": "Reconciliation report",
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "Period Start Date": {
+      "type" : "string"
+    },
+    "Period End Date":{
+      "type" : "string"
+    },
+    "Total Payable": {
+      "type" : "string"
+    },
+    "Currency":{
+      "type" : "string"
+    },
+    "Transaction Key": {
+      "type" : "string"
+    },
+    "Transaction Posted Timestamp":{
+      "type" : "string"
+    },
+    "Transaction Type": {
+      "type" : "string"
+    },
+    "Transaction Description":{
+      "type" : "string"
+    },
+    "Customer Order #": {
+      "type" : "string"
+    },
+    "Customer Order line #":{
+      "type" : "string"
+    },
+    "Purchase Order #": {
+      "type" : "string"
+    },
+    "Purchase Order line #":{
+      "type" : "string"
+    },
+    "Amount": {
+      "type" : "string"
+    },
+    "Amount Type":{
+      "type" : "string"
+    },
+    "Ship Qty": {
+      "type" : "string"
+    },
+    "Commission Rate":{
+      "type" : "string"
+    },
+    "Transaction Reason Description": {
+      "type" : "string"
+    },
+    "Partner Item Id":{
+      "type" : "string"
+    },
+    "Partner GTIN": {
+      "type" : "string"
+    },
+    "Partner Item Name":{
+      "type" : "string"
+    },
+    "Product Tax Code": {
+      "type" : "string"
+    },
+    "Ship to State":{
+      "type" : "string"
+    },
+    "Ship to City": {
+      "type" : "string"
+    },
+    "Ship to Zipcode":{
+      "type" : "string"
+    },
+    "Contract Category": {
+      "type" : "string"
+    },
+    "Product Type":{
+      "type" : "string"
+    },
+    "Commission Rule": {
+      "type" : "string"
+    },
+    "Shipping Method":{
+      "type" : "string"
+    },
+    "Fulfillment Type": {
+      "type" : "string"
+    },
+    "Fulfillment Details":{
+      "type" : "string"
+    },
+    "Original Commission": {
+      "type" : "string"
+    },
+    "Commission Incentive Program":{
+      "type" : "string"
+    },
+    "Commission Saving": {
+      "type" : "string"
+    },
+    "Customer Promo Type":{
+      "type" : "string"
+    },
+    "Campaign Id": {
+      "type" : "string"
+    }
+  }
+}
