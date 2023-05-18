@@ -11,9 +11,9 @@ For syncing data for a walmart-seller connector, we need the **Client Id** & **C
 1. Go to local Airbyte page.
 2. In the left navigation bar, click **Sources**. In the top-right corner, click **+ new source**. 
 3. Select **Walmart Seller** from the Source type dropdown. 
-4. Enter the required client id and client secret for the seller account
-5. Enter required Start Date and options End Date
-5. Click `Set up source`.
+4. Enter the required `Client ID` and `Client Secret` for the seller account
+5. Enter required `Start Date` and optional `End Date`
+6. Click `Set up source`.
 
 ## Supported sync modes
 
