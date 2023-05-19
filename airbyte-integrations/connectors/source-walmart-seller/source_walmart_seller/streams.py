@@ -415,7 +415,6 @@ class ReconciliationReport(WalmartStream, ABC):
         zipped = ZipFile(BytesIO(response.content))
         file = zipped.open(zipped.infolist()[0])
         reader = csv.DictReader(TextIOWrapper(file))
-        next(reader, None)  # skip header
         next(reader, None)  # skip the second line
         for row in reader:
             yield row
