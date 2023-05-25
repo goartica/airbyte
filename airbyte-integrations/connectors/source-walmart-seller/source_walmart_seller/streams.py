@@ -381,6 +381,8 @@ class AvailableDates(WalmartStream, ABC):
 
 
 class ReconciliationReport(WalmartStream, ABC):
+    report_date = ""
+
     @property
     def primary_key(self) -> str:
         return None
@@ -397,8 +399,8 @@ class ReconciliationReport(WalmartStream, ABC):
         }
 
     def path(self, stream_slice: Mapping[str, Any] = None, **kwargs):
-        report_date = stream_slice["report_date"]
-        return f"/v3/report/reconreport/reconFile?reportDate={report_date}&reportVersion=v1"
+        self.report_date = stream_slice["report_date"]
+        return f"/v3/report/reconreport/reconFile?reportDate={self.report_date}&reportVersion=v1"
 
     def stream_slices(self, **kwargs) -> Iterable[Mapping[str, Any]]:
         available_dates = self.dates_stream.read_records(sync_mode=SyncMode.full_refresh)
@@ -415,6 +417,6 @@ class ReconciliationReport(WalmartStream, ABC):
         zipped = ZipFile(BytesIO(response.content))
         file = zipped.open(zipped.infolist()[0])
         reader = csv.DictReader(TextIOWrapper(file))
-        next(reader, None)  # skip the second line
         for row in reader:
+            row['reportdate'] = self.report_date
             yield row
