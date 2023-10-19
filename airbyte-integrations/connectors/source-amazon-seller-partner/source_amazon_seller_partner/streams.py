@@ -1102,7 +1102,7 @@ class FinanceStream(AmazonSPStream, ABC):
             return dict(next_page_token)
 
         # for finance APIs, end date-time must be no later than two minutes before the request was submitted
-        end_date = pendulum.now("utc").subtract(minutes=5).strftime(DATE_TIME_FORMAT)
+        end_date = pendulum.now("utc").subtract(minutes=2, seconds=10).strftime(DATE_TIME_FORMAT)
         if self._replication_end_date:
             end_date = self._replication_end_date
 
@@ -1275,7 +1275,6 @@ class CatalogItems(AmazonSPStream, ABC):
     ):
         super().__init__(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
                          report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
-
         self._listing = MerchantListingsReports(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
                                                report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
 
