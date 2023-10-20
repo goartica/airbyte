@@ -3,8 +3,9 @@ acceptance_tests:
   spec:
     tests:
       - spec_path: "integration_tests/spec.json"
+        # massively refactored `spec`
         backward_compatibility_tests_config:
-          disable_for_version: "0.2.30"
+          disable_for_version: "1.2.0"
   connection:
     tests:
       - config_path: "secrets/config.json"
@@ -17,7 +18,7 @@ acceptance_tests:
     tests:
       - config_path: "secrets/config.json"
         backward_compatibility_tests_config:
-          disable_for_version: "0.2.30"
+          disable_for_version: "1.2.0"
   basic_read:
     tests:
       - config_path: "secrets/config.json"
@@ -127,11 +128,13 @@ acceptance_tests:
             bypass_reason: "no records"
   incremental:
     tests:
-      - config_path: "secrets/config_old_data.json"
+      - config_path: "secrets/config.json"
         configured_catalog_path: "integration_tests/configured_catalog_incremental.json"
+        timeout_seconds: 3600
         future_state:
           future_state_path: "integration_tests/future_state.json"
   full_refresh:
     tests:
       - config_path: "secrets/config.json"
         configured_catalog_path: "integration_tests/configured_catalog.json"
+        timeout_seconds: 3600

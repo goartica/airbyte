@@ -44,7 +44,6 @@ class AmazonSPStream(HttpStream, ABC):
         marketplace_id: str,
         period_in_days: Optional[int],
         report_options: Optional[str],
-        advanced_stream_options: Optional[str],
         max_wait_seconds: Optional[int],
         replication_end_date: Optional[str],
         *args,
@@ -174,7 +173,6 @@ class ReportsAmazonSPStream(Stream, ABC):
         report_options: Optional[str],
         max_wait_seconds: Optional[int],
         replication_end_date: Optional[str],
-        advanced_stream_options: Optional[str],
         authenticator: HttpAuthenticator = None,
     ):
         self._authenticator = authenticator
@@ -187,9 +185,6 @@ class ReportsAmazonSPStream(Stream, ABC):
         self.period_in_days = max(period_in_days, self.replication_start_date_limit_in_days)  # ensure old configs work as well
         self._report_options = report_options or "{}"
         self.max_wait_seconds = max_wait_seconds
-        self._advanced_stream_options = dict()
-        if advanced_stream_options is not None:
-            self._advanced_stream_options = json_lib.loads(advanced_stream_options)
 
     @property
     def url_base(self) -> str:
@@ -1020,15 +1015,6 @@ class SellerAnalyticsSalesAndTrafficReports(IncrementalAnalyticsStream):
     cursor_field = "queryEndDate"
     fixed_period_in_days = 1
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        if self.name in self._advanced_stream_options.keys():
-            _options: dict = self._advanced_stream_options[self.name]
-            if isinstance(_options, dict):
-                for _option_attr, _option_val in _options.items():
-                    setattr(self, _option_attr, _option_val)
-
 
 class VendorSalesReports(IncrementalAnalyticsStream):
     name = "GET_VENDOR_SALES_REPORT"
@@ -1102,7 +1088,7 @@ class FinanceStream(AmazonSPStream, ABC):
             return dict(next_page_token)
 
         # for finance APIs, end date-time must be no later than two minutes before the request was submitted
-        end_date = pendulum.now("utc").subtract(minutes=2, seconds=10).strftime(DATE_TIME_FORMAT)
+        end_date = pendulum.now("utc").subtract(minutes=5).strftime(DATE_TIME_FORMAT)
         if self._replication_end_date:
             end_date = self._replication_end_date
 
