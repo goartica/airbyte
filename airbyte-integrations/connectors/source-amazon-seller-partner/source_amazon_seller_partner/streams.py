@@ -1268,15 +1268,34 @@ class CatalogItems(AmazonSPStream, ABC):
             marketplace_id: str,
             period_in_days: Optional[int],
             report_options: Optional[str],
+            advanced_stream_options: Optional[str],
             max_wait_seconds: Optional[int],
             replication_end_date: Optional[str],
             *args,
             **kwargs,
     ):
-        super().__init__(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
-                         report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
-        self._listing = MerchantListingsReports(url_base, aws_signature, replication_start_date, marketplace_id, period_in_days,
-                                               report_options, max_wait_seconds, replication_end_date, *args, **kwargs)
+        super().__init__(
+            url_base,
+            aws_signature,
+            replication_start_date,
+            marketplace_id,
+            period_in_days,
+            report_options,
+            advanced_stream_options,
+            max_wait_seconds,
+            replication_end_date,
+            *args, **kwargs)
+        self._listing = MerchantListingsReports(
+            url_base,
+            aws_signature,
+            replication_start_date,
+            marketplace_id,
+            period_in_days,
+            report_options,
+            max_wait_seconds,
+            replication_end_date,
+            advanced_stream_options,
+            *args, **kwargs)
 
     def read_records(self, *args, **kvargs) -> Iterable[Mapping[str, Any]]:
         """
