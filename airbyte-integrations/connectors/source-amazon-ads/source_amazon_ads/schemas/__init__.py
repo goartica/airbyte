@@ -6,7 +6,7 @@ from .common import CatalogModel, Keywords, MetricsReport, NegativeKeywords, Por
 from .invoices import InvoicePayload
 from .profile import Profile
 from .sponsored_brands import BrandsAdGroup, BrandsCampaign
-from .sponsored_display import DisplayAdGroup, DisplayBudgetRules, DisplayCampaign, DisplayProductAds, DisplayTargeting
+from .sponsored_display import DisplayAdGroup, DisplayBudgetRules, DisplayCampaign, DisplayCreatives, DisplayProductAds, DisplayTargeting
 from .sponsored_products import (
     ProductAd,
     ProductAdGroupBidRecommendations,
@@ -26,6 +26,7 @@ __all__ = [
     "DisplayTargeting",
     "DisplayBudgetRules",
     "Keywords",
+    "DisplayCreatives",
     "MetricsReport",
     "NegativeKeywords",
     "Portfolio",
