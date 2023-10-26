@@ -337,6 +337,7 @@ METRICS_TYPE_TO_ID_MAP = {
     "asins_keywords": "advertisedAsin",
     "asins_targets": "advertisedAsin",
     "targets": "keywordId",
+    "searchTerm": "searchTermId"
 }
 
 
