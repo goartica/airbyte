@@ -30,6 +30,7 @@ REPORT_MAPPING = {
     "campaign_real_time_bidding_settings": "campaign",
     "campaign_bidding_strategy": "campaign",
     "service_accounts": "customer",
+    "search_term_report": "search_term_view",
 }
 
 
