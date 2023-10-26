@@ -1081,7 +1081,7 @@ class VendorDirectFulfillmentShipping(AmazonSPStream):
 class FinanceStream(AmazonSPStream, ABC):
     next_page_token_field = "NextToken"
     page_size_field = "MaxResultsPerPage"
-    page_size = 100
+    page_size = 25
     default_backoff_time = 60
     primary_key = None
 
