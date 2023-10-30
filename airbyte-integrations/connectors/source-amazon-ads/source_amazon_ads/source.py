@@ -17,6 +17,7 @@ from .streams import (
     AttributionReportPerformanceCampaign,
     AttributionReportPerformanceCreative,
     AttributionReportProducts,
+    Invoices,
     Portfolios,
     Profiles,
     SponsoredBrandsAdGroups,
@@ -130,6 +131,7 @@ class SourceAmazonAds(AbstractSource):
             AttributionReportPerformanceCampaign,
             AttributionReportPerformanceCreative,
             AttributionReportProducts,
+            Invoices,
         ]
         portfolios_stream = Portfolios(**stream_args)
         return [profiles_stream, portfolios_stream, *[stream_class(**stream_args) for stream_class in non_profile_stream_classes]]
