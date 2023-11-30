@@ -83,6 +83,7 @@ class Orders(WalmartStream, ABC):
             return self._params_from_next_page_token(str(next_page_token[self.next_page_token_field]))
 
         params = {
+            "createdStartDate": "2000-01-01",
             "lastModifiedStartDate": self.start_date,
             "limit": self.limit
         }
