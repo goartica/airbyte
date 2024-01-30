@@ -34,6 +34,7 @@ class RecordType(str, Enum):
     PRODUCTADS = "productAds"
     TARGETS = "targets"
     ASINS = "asins"
+    SEARCHTERM = "searchTerm"
 
 
 class Status(str, Enum):
