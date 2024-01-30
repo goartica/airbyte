@@ -57,6 +57,13 @@ class SourceAmazonAds(AbstractSource):
             config["start_date"] = pendulum.from_format(start_date, CONFIG_DATE_FORMAT).date()
         else:
             config["start_date"] = None
+
+        end_date = config.get("end_date")
+        if end_date:
+            config["end_date"] = pendulum.from_format(end_date, CONFIG_DATE_FORMAT).date()
+        else:
+            config["end_date"] = None
+
         if not config.get("region"):
             source_spec = self.spec(logging.getLogger("airbyte"))
             config["region"] = source_spec.connectionSpecification["properties"]["region"]["default"]
