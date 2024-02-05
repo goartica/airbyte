@@ -40,6 +40,7 @@ from .streams import (
     GeographicView,
     KeywordView,
     Label,
+    SearchTermReport,
     ServiceAccounts,
     ShoppingPerformanceView,
     TopicView,
@@ -256,6 +257,7 @@ class SourceGoogleAds(AbstractSource):
                     AdGroupAdLegacy(**non_manager_incremental_config),
                     GeographicView(**non_manager_incremental_config),
                     KeywordView(**non_manager_incremental_config),
+                    SearchTermReport(**non_manager_incremental_config),
                 ]
             )
 

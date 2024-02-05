@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "search_term_view.search_term": {
+      "type": ["null", "string"]
+    },
+    "search_term_view.status": {
+      "type": ["null", "string"],
+      "enum": [
+        "ADDED",
+        "ADDED_EXCLUDED",
+        "EXCLUDED",
+        "NONE",
+        "UNKNOWN",
+        "UNSPECIFIED"
+      ]
+    },
+    "segments.ad_network_type": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.date": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.day_of_week": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.device": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.keyword.ad_group_criterion": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.keyword.info.match_type": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.keyword.info.text": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.quarter": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.search_term_match_type": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.week": {
+      "type": ["null", "string"],
+      "format": "date"
+    },
+    "segments.year": {
+      "type": ["null", "integer"],
+      "format": "date"
+    },
+    "customer.descriptive_name": {
+      "type": ["null", "string"]
+    },
+    "ad_group.id": {
+      "type": ["null", "integer"]
+    },
+    "campaign.bidding_strategy_type": {
+      "type": ["null", "string"]
+    },
+    "metrics.clicks": {
+      "type": ["null", "integer"]
+    },
+    "metrics.cost_micros": {
+      "type": ["null", "integer"]
+    },
+    "metrics.impressions": {
+      "type": ["null", "integer"]
+    },
+    "metrics.conversions": {
+      "type": ["null", "number"]
+    },
+    "metrics.ctr": {
+      "type": ["null", "number"]
+    },
+    "campaign.id": {
+      "type": ["null", "integer"]
+    }
+  }
+}
