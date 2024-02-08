@@ -519,6 +519,7 @@ def test_stream_slices_different_timezones(config):
 def test_stream_slices_lazy_evaluation(config):
     with freeze_time("2022-06-01T23:50:00+00:00") as frozen_datetime:
         config["start_date"] = pendulum.from_format("2021-05-10", CONFIG_DATE_FORMAT).date()
+        config["end_date"] = pendulum.from_format("2022-06-02", CONFIG_DATE_FORMAT).date()
         profile1 = Profile(profileId=1, timezone="UTC", accountInfo=AccountInfo(marketplaceStringId="", id="", type="seller"))
         profile2 = Profile(profileId=2, timezone="UTC", accountInfo=AccountInfo(marketplaceStringId="", id="", type="seller"))
 
@@ -529,7 +530,7 @@ def test_stream_slices_lazy_evaluation(config):
         for _slice in stream.stream_slices(SyncMode.incremental, cursor_field=stream.cursor_field):
             slices.append(_slice)
             frozen_datetime.tick(delta=timedelta(minutes=10))
-
+        # expected =
         assert slices == [
             {"profile": profile1, "reportDate": "2022-05-27"},
             {"profile": profile2, "reportDate": "2022-05-28"},
@@ -543,7 +544,6 @@ def test_stream_slices_lazy_evaluation(config):
             {"profile": profile2, "reportDate": "2022-06-01"},
             {"profile": profile1, "reportDate": "2022-06-01"},
             {"profile": profile2, "reportDate": "2022-06-02"},
-            {"profile": profile1, "reportDate": "2022-06-02"},
         ]
 
 
@@ -551,20 +551,14 @@ def test_get_date_range_lazy_evaluation():
     get_date_range = partial(SponsoredProductsReportStream.get_date_range, SponsoredProductsReportStream)
 
     with freeze_time("2022-06-01T12:00:00+00:00") as frozen_datetime:
-        date_range = list(get_date_range(start_date=Date(2022, 5, 29), timezone="UTC"))
+        date_range = list(get_date_range(start_date=Date(2022, 5, 29), end_date=Date(2022, 6, 1)))
         assert date_range == ["2022-05-29", "2022-05-30", "2022-05-31", "2022-06-01"]
 
-        date_range = list(get_date_range(start_date=Date(2022, 6, 1), timezone="UTC"))
+        date_range = list(get_date_range(start_date=Date(2022, 6, 1), end_date=Date(2022, 6, 1)))
         assert date_range == ["2022-06-01"]
 
-        date_range = list(get_date_range(start_date=Date(2022, 6, 2), timezone="UTC"))
+        date_range = list(get_date_range(start_date=Date(2022, 6, 2), end_date=Date(2022, 6, 1)))
         assert date_range == []
-
-        date_range = []
-        for date in get_date_range(start_date=Date(2022, 5, 29), timezone="UTC"):
-            date_range.append(date)
-            frozen_datetime.tick(delta=timedelta(hours=3))
-        assert date_range == ["2022-05-29", "2022-05-30", "2022-05-31", "2022-06-01", "2022-06-02"]
 
 
 @responses.activate
